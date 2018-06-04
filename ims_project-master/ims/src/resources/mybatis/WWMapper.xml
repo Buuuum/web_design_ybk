@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.sunmoon.persistance.WWMapper">
+	<resultMap id="wwResultMap" type="ww">
+		<id column="WW_NO" property="wwNo" />
+		<result column="WARE_NO" property="wareNo" />
+		<result column="WITH_NO" property="withNo" />
+		<result column="WW_DATE" property="wwDate" />
+		<result column="QUANTITY" property="quantity" />
+		<result column="AMMOUNT" property="ammount" />
+		<result column="USEABLE" property="useable" />
+		<result column="CON_VER" property="conVer" />
+		<result column="NOTE" property="note" />
+	</resultMap>
+	
+	<select id="list" parameterType="ww" resultMap="wwResultMap">
+		SELECT WW_NO
+			  ,WARE_NO
+			  ,WITH_NO
+			  ,WW_DATE
+			  ,QUANTITY
+			  ,AMMOUNT
+			  ,CON_VER
+			  ,NOTE
+		FROM WW
+		<where>
+		AND USEABLE = #{useable}
+			<if test="wwNo > 0">
+				AND WW_NO = #{wwNo}
+			</if>
+			<if test="wareNo > 0">
+				AND WARE_NO = #{wareNo}
+			</if>
+			<if test="withNo > 0">
+				AND WITH_NO = #{withNo}
+			</if>
+			<if test="wwDate != null and wwDate != ''">
+				AND WW_DATE = #{wwDate}
+			</if>
+			<if test="first != null and last != null">
+				AND WW_DATE BETWEEN #{first}
+				AND #{last} + 1
+			</if>
+			<if test="conVer != null and conVer != ''">
+                AND UPPER( CON_VER ) LIKE UPPER ( '%' || #{conVer} || '%' )
+            </if>
+		</where>
+		<if test="wwSortOption != null">
+			<if test="wwSortOption.name() == 'NO'">
+				ORDER BY WW_NO ASC
+			</if>
+			<if test="wwSortOption.name() == 'WARE_NO'">
+				ORDER BY WARE_NO ASC
+			</if>
+			<if test="wwSortOption.name() == 'WITH_NO'">
+				ORDER BY WITH_NO ASC
+			</if>
+			<if test="wwSortOption.name() == 'WW_DATE'">
+				ORDER BY WW_DATE DESC
+			</if>
+			<if test="wwSortOption.name() == 'QUANTITY'">
+				ORDER BY QUANTITY DESC
+			</if>
+			<if test="wwSortOption.name() == 'AMMOUNT'">
+				ORDER BY AMMOUNT DESC
+			</if>
+		</if>
+	</select>
+	
+	<select id="select" parameterType="ww" resultMap="wwResultMap">
+		SELECT WW_NO
+			  ,WARE_NO
+			  ,WITH_NO
+			  ,WW_DATE
+			  ,QUANTITY
+			  ,AMMOUNT
+			  ,CON_VER
+			  ,NOTE
+		FROM WW
+		WHERE WW_NO = #{wwNo}
+		AND USEABLE = #{useable}
+	</select>
+	
+	<select id="findItem" parameterType="ww" resultMap="wwResultMap">
+        SELECT W.WW_NO
+              ,W.WARE_NO
+              ,W.WITH_NO
+              ,W.WW_DATE
+              ,W.QUANTITY
+              ,W.AMMOUNT
+              ,W.USEABLE
+              ,W.CON_VER
+              ,W.NOTE
+              ,WA.WARE_NO
+              ,I.ITEM_CODE
+              ,I.ITEM_NAME
+       FROM WW W
+       LEFT OUTER JOIN WAREHOUSING WA
+       ON W.WARE_NO = WA.WARE_NO
+       LEFT OUTER JOIN ITEM I
+       ON WA.ITEM_NO = I.ITEM_CODE
+       <where>
+       AND W.USEABLE = #{useable}
+           <if test="findOption != null">
+               <if test="findOption().name == 'ITEM_CODE'">
+                   AND UPPER( I.ITEM_CODE ) LIKE UPPER ( '%' || #{keyword} || '%' )
+               </if>
+               <if test="findOption().name == 'ITEM_NAME'"> 
+                   AND UPPER( I.ITEM_NAME ) LIKE UPPER ( '%' || #{keyword} || '%' )
+               </if>
+            </if>
+       </where>
+       ORDER BY WW_DATE DESC
+	</select>
+
+    <select id="findClient" parameterType="ww" resultMap="wwResultMap">
+        SELECT W.WW_NO
+              ,W.WARE_NO
+              ,W.WITH_NO
+              ,W.WW_DATE
+              ,W.QUANTITY
+              ,W.AMMOUNT
+              ,W.USEABLE
+              ,W.CON_VER
+              ,W.NOTE
+       FROM WW W
+       LEFT OUTER JOIN WITHDRAW WI
+       ON W.WITH_NO = WI.WITH_NO
+       LEFT OUTER JOIN CLIENT C
+       ON WI.CLIENT_NO = C.CLIENT_NO
+       WHERE UPPER( C.CLIENT_NAME ) LIKE UPPER ( '%' || #{keyword} || '%' )
+       AND W.USEABLE = #{useable}
+       ORDER BY WW_DATE
+    </select>
+
+	<insert id="insert" parameterType="ww">
+		<selectKey keyColumn="WW_NO" keyProperty="wwNo" resultType="int" order="BEFORE">
+			SELECT WW_SEQ.NEXTVAL
+			FROM DUAL
+		</selectKey>
+		INSERT INTO WW
+			( WW_NO
+			  ,WARE_NO
+			  ,WITH_NO
+			  ,WW_DATE
+			  ,QUANTITY
+			  ,AMMOUNT
+			  ,CON_VER
+			  ,NOTE
+			  ,USEABLE )
+		VALUES
+			(#{wwNo}, #{wareNo}, #{withNo}, SYSDATE, #{quantity}, 
+			 #{ammount}, #{conVer}, #{note}, 1)
+	</insert>
+
+	<update id="update" parameterType="ww">
+		UPDATE 
+		WW
+		SET
+		WARE_NO    = #{wareNo},
+		WITH_NO   = #{withNo},
+		WW_DATE  = #{wwDate},
+		QUANTITY = #{quantity},
+		AMMOUNT  = #{ammount},
+		CON_VER  = #{conVer},
+		USEABLE  = #{useable},
+		NOTE     = #{note}
+		WHERE
+		WW_NO    = #{wwNo}
+	</update>
+
+	<update id="delete" parameterType="ww">
+		UPDATE
+		WW
+		SET
+		USEABLE = 0
+		WHERE
+		WW_NO = #{wwNo}
+	</update>
+</mapper>

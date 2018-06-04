@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.sunmoon.persistance.BereleasedMapper">
+	<resultMap id="bereleasedResultMap" type="bereleased">
+		<id column="BE_NO" property="beNo" />
+		<result column="ITEM_NO" property="itemNo" />
+		<result column="BE_DATE" property="beDate" />
+		<result column="UNIT" property="unit" />
+		<result column="PRICE" property="price" />
+		<result column="DISCOUNT" property="discount" />
+		<result column="CON_VER" property="conVer" />
+		<result column="USEABLE" property="useable" />
+	</resultMap>
+	
+	<select id="list" parameterType="bereleased" resultMap="bereleasedResultMap">
+		SELECT BE_NO
+			  ,ITEM_NO
+			  ,BE_DATE
+			  ,UNIT
+			  ,PRICE
+			  ,DISCOUNT
+			  ,CON_VER
+			  ,USEABLE
+		FROM BERELEASED
+		<where>
+		AND USEABLE = #{useable}
+			<if test="beNo > 0">
+				AND BE_NO = #{beNo}
+			</if>
+			<if test="itemNo != null and itemNo != ''">
+				AND UPPER( ITEM_NO ) LIKE UPPER ( '%' || #{itemNo} || '%' )
+			</if>
+			<if test="beDate != null and beDate != ''">
+				AND BE_DATE = #{beDate}
+			</if>
+			<if test="first != null and last != null">
+				AND BE_DATE BETWEEN #{first}
+				AND #{last} + 1
+			</if>
+			<if test="conVer != null and conVer != ''">
+                AND UPPER( CON_VER ) LIKE UPPER ( '%' || #{conVer} || '%' )
+            </if>
+		</where>
+		<if test="bereleasedSortOption != null">
+			<if test="bereleasedSortOption.name() == 'BE_NO'">
+				ORDER BY BE_NO ASC
+			</if>
+			<if test="bereleasedSortOption.name() == 'ITEM_NO'">
+				ORDER BY ITEM_NO ASC
+			</if>
+			<if test="bereleasedSortOption.name() == 'BE_DATE'">
+				ORDER BY BE_DATE DESC
+			</if>
+			<if test="bereleasedSortOption.name() == 'UNIT'">
+				ORDER BY UNIT DESC
+			</if>
+			<if test="bereleasedSortOption.name() == 'PRICE'">
+				ORDER BY PRICE DESC
+			</if>
+			<if test="bereleasedSortOption.name() == 'DISCOUNT'">
+				ORDER BY DISCOUNT ASC
+			</if>
+		</if>
+	</select>
+	
+	<select id="select" parameterType="bereleased" resultMap="bereleasedResultMap">
+		SELECT BE_NO
+			  ,ITEM_NO
+			  ,BE_DATE
+			  ,UNIT
+			  ,PRICE
+			  ,DISCOUNT
+			  ,CON_VER
+			  ,USEABLE
+		FROM BERELEASED
+		WHERE BE_NO = #{beNo}
+		AND USEABLE = #{useable}
+	</select>
+	
+	<select id="findItem" parameterType="bereleased" resultMap="bereleasedResultMap">
+		SELECT BE.BE_NO
+              ,BE.ITEM_NO
+			  ,BE.BE_DATE
+			  ,BE.UNIT
+			  ,BE.PRICE
+			  ,BE.DISCOUNT
+			  ,BE.CON_VER
+			  ,BE.USEABLE
+		FROM BERELEASED BE
+		LEFT OUTER JOIN ITEM I
+		ON BE.ITEM_NO = I.ITEM_CODE
+		WHERE UPPER( I.ITEM_NAME ) LIKE UPPER ( '%' || #{keyword} || '%' )
+		AND BE.USEABLE = #{useable}
+		ORDER BY BE.BE_DATE DESC
+	</select>
+
+	<insert id="insert" parameterType="bereleased">
+		<selectKey keyColumn="BE_NO" keyProperty="beNo" resultType="int" order="BEFORE">
+			SELECT BERELEASED_SEQ.NEXTVAL
+			FROM DUAL
+		</selectKey>
+		INSERT INTO BERELEASED
+			( BE_NO
+			  ,ITEM_NO
+			  ,BE_DATE
+			  ,UNIT
+			  ,PRICE
+			  ,DISCOUNT
+			  ,CON_VER
+			  ,USEABLE )
+		VALUES
+			(#{beNo}, #{itemNo}, SYSDATE, #{unit}, #{price},
+			 #{discount}, #{conVer}, 1)
+	</insert>
+
+	<update id="update" parameterType="bereleased">
+		UPDATE 
+		BERELEASED
+		SET
+		ITEM_NO   = #{itemNo}, 
+		BE_DATE   = #{beDate}, 
+		UNIT      = #{unit}, 
+		PRICE     = #{price}, 
+		DISCOUNT  = #{discount},
+		CON_VER   = #{conVer},
+		USEABLE   = #{useable}
+		WHERE
+		BE_NO     = #{beNo}
+	</update>
+
+	<update id="delete" parameterType="bereleased">
+		UPDATE
+		BERELEASED
+		SET
+		USEABLE = 0
+		WHERE
+		BE_NO = #{beNo}
+	</update>
+</mapper>

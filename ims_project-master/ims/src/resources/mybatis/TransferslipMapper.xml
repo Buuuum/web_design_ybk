@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ims.sunmoon.persistance.TransferslipMapper">
+	<resultMap id="transferslipResultMap" type="transferslip">
+		<id column="TS_NO" property="tsNo" />
+		<result column="TS_DATE" property="tsDate" />
+		<result column="CLIENT_NO" property="clientNo" />
+		<result column="CON_VER" property="conVer" />
+		<result column="DEBTOR_NO" property="debtorNo" />
+		<result column="DEBTOR_AMMOUNT" property="debtorAmmount" />
+		<result column="CREDIT_NO" property="creditNo" />
+		<result column="CREDIT_AMMOUNT" property="creditAmmount" />
+		<result column="USEABLE" property="useable" />
+		<result column="NOTE" property="note" />
+	</resultMap>
+	
+	<select id="list" parameterType="transferslip" resultMap="transferslipResultMap">
+		SELECT TS_NO
+			  ,TS_DATE
+			  ,CLIENT_NO
+			  ,CON_VER
+			  ,DEBTOR_NO
+			  ,DEBTOR_AMMOUNT
+			  ,CREDIT_NO
+			  ,CREDIT_AMMOUNT
+			  ,USEABLE
+			  ,NOTE
+		FROM TRANSFERSLIP
+		<where>
+		AND USEABLE = #{useable}
+			<if test="tsNo > 0">
+				AND TS_NO = #{tsNo}
+			</if>
+			<if test="tsDate != null and tsDate != ''">
+				AND TS_DATE = #{tsDate}
+			</if>
+			<if test="clientNo > 0">
+				AND CLIENT_NO = #{clientNo}
+			</if>
+			<if test="debtorNo > 0">
+				AND DEBTOR_NO = #{debtorNo}
+			</if>
+			<if test="creditNo > 0">
+				AND CREDIT_NO = #{creditNo}
+			</if>
+			<if test="first != null and last != null">
+				AND TS_DATE BETWEEN #{first}
+				AND #{last} + 1
+			</if>
+			<if test="conVer != null and conVer != ''">
+                AND UPPER( CON_VER ) LIKE UPPER ( '%' || #{conVer} || '%' )
+            </if>
+		</where>
+		<if test="transferslipSortOption != null">
+			<if test="transferslipSortOption.name() == 'NO'">
+				ORDER BY TS_NO ASC
+			</if>
+			<if test="transferslipSortOption.name() == 'TS_DATE'">
+				ORDER BY TS_DATE DESC
+			</if>
+			<if test="transferslipSortOption.name() == 'CLIENT_NO'">
+				ORDER BY CLIENT_NO ASC
+			</if>
+			<if test="transferslipSortOption.name() == 'DEBTOR_NO'">
+				ORDER BY DEBTOR_NO ASC
+			</if>
+			<if test="transferslipSortOption.name() == 'DEBTOR_AMMOUNT'">
+				ORDER BY DEBTOR_AMMOUNT DESC
+			</if>
+			<if test="transferslipSortOption.name() == 'CREDIT_NO'">
+				ORDER BY CREDIT_NO ASC
+			</if>
+			<if test="transferslipSortOption.name() == 'CREDIT_AMMOUNT'">
+				ORDER BY CREDIT_AMMOUNT DESC
+			</if>
+		</if>
+	</select>
+	
+	<select id="select" parameterType="transferslip" resultMap="transferslipResultMap">
+		SELECT TS_NO
+			  ,TS_DATE
+			  ,CLIENT_NO
+			  ,CON_VER
+			  ,DEBTOR_NO
+			  ,DEBTOR_AMMOUNT
+			  ,CREDIT_NO
+			  ,CREDIT_AMMOUNT
+			  ,USEABLE
+			  ,NOTE
+		FROM TRANSFERSLIP
+		WHERE TS_NO = #{tsNo}
+		AND USEABLE = #{useable}
+	</select>
+	
+    <select id="find" parameterType="transferslip" resultMap="transferslipResultMap">
+    	SELECT TS.TS_NO
+       		   ,TS.TS_DATE
+			   ,TS.CLIENT_NO
+			   ,TS.CON_VER
+			   ,TS.DEBTOR_NO
+			   ,TS.DEBTOR_AMMOUNT
+			   ,TS.CREDIT_NO
+			   ,TS.CREDIT_AMMOUNT
+			   ,TS.USEABLE
+			   ,TS.NOTE
+               ,CR.ACCOUNT_NAME AS CREDIT_NAME
+               ,DE.ACCOUNT_NAME AS DEBTOR_NAME
+        FROM TRANSFERSLIP TS
+        LEFT OUTER JOIN ACCOUNT CR
+        ON TS.CREDIT_NO = CR.ACCOUNT_NO
+        LEFT OUTER JOIN ACCOUNT DE
+        ON TS.DEBTOR_NO = DE.ACCOUNT_NO
+        <where>
+        AND TS.USEABLE = #{useable}
+        	<if test="findOption != null">
+        		<if test="findOption.name() == 'DEBTOR_NO'">
+        			AND TS.DEBTOR_NO = #{debtorNo}
+        			ORDER BY TS.DEBTOR_NO ASC
+        		</if>
+        		<if test="findOption.name() == 'CREDIT_NO'">
+        			AND TS.CREDIT_NO = #{creditNo}
+        			ORDER BY TS.CREDIT_NO ASC
+        		</if>
+        		<if test="findOption.name() == 'DEBTOR_NAME'">
+        			AND UPPER( DE.ACCOUNT_NAME ) LIKE UPPER ( '%' || #{debtorName} || '%' )
+        			ORDER BY DE.ACCOUNT_NAME ASC
+        		</if>
+        		<if test="findOption.name() == 'CREDIT_NAME'">
+        			AND UPPER( CR.ACCOUNT_NAME ) LIKE UPPER ( '%' || #{creditName} || '%' )
+        			ORDER BY CR.ACCOUNT_NAME ASC
+        		</if>
+        	</if>
+        </where>
+    </select>
+
+	<insert id="insert" parameterType="transferslip">
+		<selectKey keyColumn="TS_NO" keyProperty="tsNo" resultType="int" order="BEFORE">
+			SELECT TRANSFERSLIP_SEQ.NEXTVAL
+			FROM DUAL
+		</selectKey>
+		INSERT INTO TRANSFERSLIP
+			( TS_NO
+			  ,TS_DATE
+			  ,CLIENT_NO
+			  ,CON_VER
+			  ,DEBTOR_NO
+			  ,DEBTOR_AMMOUNT
+			  ,CREDIT_NO
+			  ,CREDIT_AMMOUNT
+			  ,USEABLE
+			  ,NOTE)
+		VALUES
+			(#{tsNo}, SYSDATE, #{clientNo}, #{conVer}, #{debtorNo}, 
+			 #{debtorAmmount}, #{creditNo}, #{creditAmmount}, 1, #{note})
+	</insert>
+
+	<update id="update" parameterType="transferslip">
+		UPDATE 
+		TRANSFERSLIP
+		SET
+		TS_DATE        = #{tsDate},
+		CLIENT_NO      = #{clientNo},
+		CON_VER        = #{conVer},
+		DEBTOR_NO      = #{debtorNo},
+		DEBTOR_AMMOUNT = #{debtorAmmount},
+		CREDIT_NO      = #{creditNo},
+		CREDIT_AMMOUNT = #{creditAmmount},
+		USEABLE        = #{useable},
+		NOTE           = #{note},
+		WHERE
+		TS_NO          = #{tsNo}
+	</update>
+
+	<update id="delete" parameterType="transferslip">
+		UPDATE
+		TRANSFERSLIP
+		SET
+		USEABLE = 0
+		WHERE
+		TS_NO = #{tsNo}
+	</update>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%5p [%t] - %m%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="ims.sunmoon.persistance.AccountMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.BDMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.BerelasedMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.ClientMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.DepositMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.ItemMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.LoginInfoMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.ManagerMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.TransferslipMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.WarehousingMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.WithdrawMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+		
+		<Logger name="ims.sunmoon.persistance.WWMapper" level="trace"
+			additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>
