@@ -2,7 +2,6 @@
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,7 +143,7 @@ a, a:hover, a:focus {
 
 #sidebar ul li a:hover {
    color: #7386D5;
-   background: #fff;
+   background: #7386D5;
 }
 
 #sidebar ul li.active>a, a[aria-expanded="true"] {
@@ -342,31 +341,23 @@ a.article, a.article:hover {
                data-toggle="collapse" aria-expanded="true" id='hsubmenu'
                onclick="toggle('homeSubmenu', 'hsubmenu');"> 거래내역 </a>
                <ul class="collapse list-unstyled" id="homeSubmenu">
-                  <li><a href="#" style="color: white"> 매입현황 </a></li>
-                  <li><a href="#" style="color: white"> 매출현황 </a></li>
-                  <li><a href="#" style="color: white"> 발주예약 </a></li>
-                  <li><a href="#" style="color: white"> 수주예약 </a></li>
-                  <li><a href="#" style="color: white"> 대체거래 </a></li>
-                  <li><a href="#" style="color: white"> 입금거래 </a></li>
-                  <li><a href="#" style="color: white"> 출금거래 </a></li>
+                     <li><a href="/ww/list" style=color:white> 매입현황 </a></li>
+               <li><a href="/bd/list" style=color:white> 매출현황 </a></li>
+               <li><a href="/ware/list" style=color:white> 발주예약 </a></li>
+               <li><a href="/be/list" style=color:white> 수주예약 </a></li>
+               <li><a href="/ts/list" style=color:white> 대체거래 </a></li>
+               <li><a href="/dep/list" style=color:white> 입금거래 </a></li>
+               <li><a href="/with/list" style=color:white> 출금거래 </a></li>
                </ul></li>
             <li class="active"><a href="#pageSubmenu"
                data-toggle="collapse" aria-expanded="true" id='psubmenu'
                onclick="toggle('pageSubmenu', 'psubmenu');"> 기초정보 </a>
                <ul class="collapse list-unstyled" id="pageSubmenu">
-                  <li><a href="#" style="color: white"> 계좌/장부 조회 </a></li>
-                  <li><a href="#" style="color: white"> 담당자 조회 </a></li>
-                  <li><a href="#" style="color: white"> 거래처 조회 </a></li>
-                  <li><a href="#" style="color: white"> 재고조회 </a></li>
+                    <li><a href="/account/list" style=color:white> 계좌/장부 조회 </a></li>
+               <li><a href="/manager/list" style=color:white> 담당자 조회 </a></li>
+               <li><a href="/client/list" style=color:white> 거래처 조회 </a></li>
+               <li><a href="/item/list" style=color:white> 재고조회 </a></li>
                </ul></li>
-            <li class="active"><a href="#bogoSubmenu"
-               data-toggle="collapse" aria-expanded="true" id='bsubmenu'
-               onclick="toggle('bogoSubmenu', 'bsubmenu');"> 보고서 </a>
-               <ul class="collapse list-unstyled" id="bogoSubmenu">
-                  <li><a href="#" style="color: white"> 손익보고서 </a></li>
-                  <li><a href="#" style="color: white"> 발주서 </a></li>
-                  <li><a href="#" style="color: white"> 주문서 </a></li>
-               </ul>
       </nav>
 
       <!-- Page Content Holder -->
@@ -384,10 +375,10 @@ a.article, a.article:hover {
 
                <div id="div2">
                   <ul class="nav navbar-nav navbar-right">
-                     <li><a href="#"> 계좌/장부 조회 </a></li>
-                     <li><a href="#"> 담장자 조회 </a></li>
-                     <li><a href="#"> 거래처 조회 </a></li>
-                     <li><a href="#"> 재고 조회 </a></li>
+                     <li><a href="/account/list"> 계좌/장부 조회 </a></li>
+                     <li><a href="/manager/list"> 담장자 조회 </a></li>
+                     <li><a href="/client/list"> 거래처 조회 </a></li>
+                     <li><a href="/item/list"> 재고 조회 </a></li>
                   </ul>
                </div>
             </div>
@@ -395,99 +386,99 @@ a.article, a.article:hover {
          <h3>거래처 등록</h3>
 
          <br> <label for="sel1"><h4> [거래처 정보] </h4></label> <br> <label for="sel1"> 거래처번호 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="clientNo">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="clientNo">
             <c:out value="${client.clientNo}" />
          </div>
          <br> <label for="sel1"> 거래처명 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="clientName">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="clientName">
             <c:out value="${client.clientName}" />
          </div>
          <br> <label for="sel1"> 상호명 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="compName">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="compName">
             <c:out value="${client.compName}" />
          </div>
          <br> <label for="sel1"> 대표자 </label>
-			<br><div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="rep">
+         <br><div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="rep">
             <c:out value="${client.rep}" />
          </div>
          <br> <label for="sel1"> 사업자번호 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="bsnLicNo">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="bsnLicNo">
             <c:out value="${client.bsnLicNo}" />
          </div>
         <br> <label for="sel1"> 종사업장 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="bsnEst">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="bsnEst">
             <c:out value="${client.bsnEst}" />
          </div>
          <br> <label for="sel1"> 종사업장주소 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="bsnEstAddr">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="bsnEstAddr">
             <c:out value="${client.bsnEstAddr}" />
          </div>
          <br> <label for="sel1"> 종목 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="event">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="event">
             <c:out value="${client.event}" />
          </div>
          <br> <label for="sel1"> 대표전화 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="repPhone">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="repPhone">
             <c:out value="${client.repPhone}" />
          </div>
          <br> <label for="sel1"> 대표팩스 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="repFax">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="repFax">
             <c:out value="${client.repFax}" />
          </div>
          <br> <label for="sel1"> 이메일 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="email">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="email">
             <c:out value="${client.email}" />
          </div>
         <br> <label for="sel1"> 휴대전화 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="cellphone">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="cellphone">
             <c:out value="${client.cellphone}" />
          </div>
          <br> <label for="sel1"> 담당자번호 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="managerNo">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="managerNo">
             <c:out value="${client.managerNo}" />
          </div>
          <br> <label for="sel1"> 우편번호 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="zipNo">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="zipNo">
             <c:out value="${client.zipNo}" />
          </div>
          <br> <label for="sel1"> 계좌정보 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="accountNo">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="accountNo">
             <c:out value="${client.accountNo}" />
          </div>
          <br> <label for="sel1"> 사용(조회) 가능여부 </label>
-			<div class="col-sm-20">
-				<input type="text" class="form-control" id="inputcode"
-					placeholder="useable">
+         <div class="col-sm-20">
+            <input type="text" class="form-control" id="inputcode"
+               placeholder="useable">
             <c:out value="${client.useable}" />
          </div>
          <br>
